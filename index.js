@@ -25,25 +25,55 @@ class Word {
     this.correctLetters = []
   }
 
-  // implement the guessLetter function:
-  // guessLetter(letter) {}
+  guessLetter(letter) {
+    console.log(this.word)
+    console.log(letter)
+    this.letter = letter
+    if (this.word.includes(letter)) {
+  
+      for (let i= 0; i < this.word.length; i++) {
+        if(this.word[i] === letter) {
+        this.displayWord = this.displayWord.substring(0,i) + letter + this.displayWord.substring(i+1, this.displayWord.length) 
+        }
+      }
+      this.correctLetters.push(letter);
+     
+    } else { 
+     
+      this.incorrectLetters.push(letter)
+      this.remainingGuesses -=1    
+    }
+  }
+  
+  updateScreen() {
+    document.getElementById("remaining-guesses").textContent = this.remainingGuesses
+    document.getElementById("incorrect-letters").textContent = this.incorrectLetters
+    document.getElementById("word-to-guess").textContent = this.displayWord
+  }
 
-  // implement the updateScreen function:
-  // updateScreen() {}
+  isGameOver() {
+    if (this.remainingGuesses <= 0 || this.displayWord == this.word) {
+      return true
+    } else {
+      return false
+    } 
+  }
 
-  // implement the isGameOver function:
-  // isGameOver() {}
-
-  // implement the getWinOrLoss function:
-  // getWinOrLoss() {}
+   getWinOrLoss() {
+      if (this.remainingGuesses > 0 && this.displayWord === this.word) {
+      return 'win'
+    } else if (this.remainingGuesses <= 0 && this.displayWord !== this.word) {
+        return 'loss' 
+    } else {
+      return null
+    }
+  }
 }
-
 function newGame() {
   const randomWord = words[Math.floor(Math.random() * words.length)]
   currentWord = new Word(randomWord)
   currentWord.updateScreen()
 }
-
 document.onkeyup = function(e) {
   const pressedKey = e.key.toLowerCase()
   // early exit for non-letter key presses
